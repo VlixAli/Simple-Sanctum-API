@@ -45,27 +45,26 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        if((Auth::user()->id !== $task->user_id)){
+        if ((Auth::user()->id !== $task->user_id)) {
             return $this->error('',
-                'You are not authorized to make this request' , 403);
+                'You are not authorized to make this request', 403);
         }
         return new TaskResource($task);
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Task $task)
     {
-        //
+        if ((Auth::user()->id !== $task->user_id)) {
+            return $this->error('',
+                'You are not authorized to make this request', 403);
+        }
+
+        $task->update($request->all());
+
+        return new TaskResource($task);
     }
 
     /**
